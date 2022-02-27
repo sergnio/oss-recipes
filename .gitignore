@@ -37,5 +37,7 @@ yarn-error.log*
 /.vs/IntrepidReact.UI/v16/TestStore/0/testlog.manifest
 /.vs/IntrepidReact.UI/v16/TestStore/0/000.testlog
 
+firebase-secrets.json
+
 # cypress
 cypress.env.json
