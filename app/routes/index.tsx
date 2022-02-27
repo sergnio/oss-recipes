@@ -1,28 +1,22 @@
-import prisma from "../../lib/prisma";
 import { LoaderFunction, useLoaderData } from "remix";
-import invariant from "tiny-invariant";
+import { PromiseReturnType } from "@prisma/client/scripts/default-index";
+import getRecipes from "~/data/getRecipes";
 
-export const loader: LoaderFunction = async ({ params: { slug } }) => {
-  // invariant(slug, "expected params.slug");
-  const feed = await prisma.recipe.findMany({
-    where: { published: true },
-    include: {
-      author: {
-        select: { name: true },
-      },
-    },
-  });
-  return feed;
-  // return getPost(slug);
-};
+export const loader: LoaderFunction = async () => getRecipes();
 
 export default function Index() {
-  const feed = useLoaderData<Recipe>();
-  console.log({ feed });
+  const recipes = useLoaderData<PromiseReturnType<typeof getRecipes>>();
+  console.log({ recipes });
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
       <h1>Welcome OSS Recipes</h1>
-      <ul>{feed}</ul>
+      <ul>
+        {recipes.map((r, index) => (
+          <li key={`${r.title}-${index}`}>
+            Name {r.title} by {r.author?.name}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
