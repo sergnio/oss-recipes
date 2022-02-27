@@ -1,10 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 // schema.prisma
 datasource db {
   provider = "postgresql"
@@ -15,7 +11,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Post {
+model Recipe {
   id        Int     @default(autoincrement()) @id
   title     String
   content   String?
@@ -30,6 +26,6 @@ model User {
   email         String?   @unique
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  posts         Post[]
+  recipes       Recipe[]
   @@map(name: "users")
 }
