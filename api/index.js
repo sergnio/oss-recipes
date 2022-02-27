@@ -1,4 +1,3 @@
-// @ts-nocheck
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -73,7 +72,7 @@ var init_react = __esm({
 
 // node_modules/remix/index.js
 var require_remix = __commonJS({
-  "node_modules/remix/index.js"(exports) {
+  "node_modules/remix/index.ts"(exports) {
     "use strict";
     init_react();
     Object.defineProperty(exports, "__esModule", { value: true });
