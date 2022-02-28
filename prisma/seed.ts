@@ -1,55 +1,62 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 const db = new PrismaClient();
 
-const getRecipes = () => [
+const getUsers = (): Prisma.UserUncheckedCreateInput[] => [
   {
-    title: "Road worker",
-    content: `I never wanted to believe that my Dad was stealing from his job as a road worker. But when I got home, all the signs were there.`,
-    published: true,
-    authorId: 1,
+    id: 1,
+    email: "sa@gm.com",
+    name: "Sergnio",
   },
+];
+
+const getRecipes = (): Prisma.RecipeUncheckedCreateInput[] => [
   {
-    title: "Frisbee",
-    content: `I was wondering why the frisbee was getting bigger, then it hit me.`,
-    published: true,
+    title: "Bob's Soup Recipe",
     authorId: 1,
-  },
-  {
-    title: "Trees",
-    content: `Why do trees seem suspicious on sunny days? Dunno, they're just a bit shady.`,
-    published: true,
-    authorId: 1,
-  },
-  {
-    title: "Skeletons",
-    content: `Why don't skeletons ride roller coasters? They don't have the stomach for it.`,
-    published: true,
-    authorId: 1,
-  },
-  {
-    title: "Hippos",
-    content: `Why don't you find hippopotamuses hiding in trees? They're really good at it.`,
-    published: true,
-    authorId: 1,
-  },
-  {
-    title: "Dinner",
-    content: `What did one plate say to the other plate? Dinner is on me!`,
-    published: true,
-    authorId: 1,
-  },
-  {
-    title: "Elevator",
-    content: `My first time using an elevator was an uplifting experience. The second time let me down.`,
-    published: true,
-    authorId: 1,
+    ingredients: {
+      create: [
+        {
+          authorId: 1,
+          ingredient: {
+            create: {
+              name: "Carrots",
+            },
+          },
+        },
+        {
+          authorId: 1,
+          ingredient: {
+            create: {
+              name: "Carrots",
+            },
+          },
+        },
+        {
+          authorId: 1,
+          ingredient: {
+            create: {
+              name: "Carrots",
+            },
+          },
+        },
+      ],
+    },
   },
 ];
 
 async function seed() {
+  // users
+  await Promise.all(
+    getUsers().map((user) => {
+      db.user.create({ data: user });
+    })
+  );
+  // recipes and some ingredients
   await Promise.all(
     getRecipes().map((recipe) => {
-      return db.recipe.create({ data: recipe });
+      return db.recipe.create({
+        data: recipe,
+      });
     })
   );
 }
