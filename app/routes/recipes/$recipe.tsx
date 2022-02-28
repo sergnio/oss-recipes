@@ -16,6 +16,7 @@ export default () => {
   return (
     <>
       <h1>{recipe?.title}</h1>
+      <p>single recipe</p>
     </>
   );
 };
