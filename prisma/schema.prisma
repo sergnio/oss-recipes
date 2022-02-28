@@ -11,21 +11,58 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Recipe {
-  id        Int     @default(autoincrement()) @id
-  title     String
-  content   String
-  published Boolean @default(false)
-  author    User   @relation(fields: [authorId], references: [id])
-  authorId  Int
-}
-
 model User {
   id            Int       @default(autoincrement()) @id
   name          String
   email         String   @unique
+  recipes       Recipe[]
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
-  recipes       Recipe[]
   @@map(name: "users")
 }
+
+model Recipe {
+  id         Int                 @id @default(autoincrement())
+  title      String
+  ingredients IngredientsOnRecipes[]
+  published Boolean @default(false)
+  author    User   @relation(fields: [authorId], references: [id])
+  authorId  Int
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+}
+
+model Ingredient {
+  id    Int                 @id @default(autoincrement())
+  name  String
+  recipes IngredientsOnRecipes[]
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+}
+
+model IngredientsOnRecipes {
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  recipeId     Int // relation scalar field (used in the `@relation` attribute above)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId Int // relation scalar field (used in the `@relation` attribute above)
+  createdAt    DateTime  @default(now()) @map(name: "created_at")
+  updatedAt    DateTime  @updatedAt @map(name: "updated_at")
+  authorId     Int
+
+  @@id([recipeId, ingredientId])
+}
+
+//
+//model IngredientQuantity {
+//    ingredientId   Int
+//    quantity       Int
+//    createdAt     DateTime  @default(now()) @map(name: "created_at")
+//    updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+//}
+//
+//model Instruction {
+//   content       String
+//   recipeId      Int
+//   createdAt     DateTime  @default(now()) @map(name: "created_at")
+//   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+//}

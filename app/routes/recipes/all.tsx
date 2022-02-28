@@ -8,6 +8,7 @@ export const loader: LoaderFunction = async () => getRecipes();
 
 export default () => {
   const recipes = useLoaderData<PromiseReturnType<typeof getRecipes>>();
+  console.log({ recipes });
 
   return (
     <>
@@ -15,7 +16,7 @@ export default () => {
         {recipes.map((r, index) => (
           <StyledLi key={`${r.title}-${index}`}>
             <Link to={singleRecipe(r.id)}>
-              Name {r.title} by {r.author?.name}
+              {r.title}, by {r.author?.name}
             </Link>
           </StyledLi>
         ))}
